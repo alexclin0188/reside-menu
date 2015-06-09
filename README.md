@@ -16,4 +16,5 @@ sm.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {
         });
         
 ```Java
-SlidingMenu.CanvasTransformer中的transformCanvas增加了scrollX参数，可用来判断当前是右滑菜单还是左划菜单
+SlidingMenu.CanvasTransformer中的transformCanvas增加了scrollX参数，
+可用来判断当前是右滑菜单还是左划菜单做出相应处理，详见Demo
