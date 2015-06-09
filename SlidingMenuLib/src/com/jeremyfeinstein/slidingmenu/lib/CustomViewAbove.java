@@ -1,5 +1,6 @@
 package com.jeremyfeinstein.slidingmenu.lib;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -303,7 +304,7 @@ public class CustomViewAbove extends ViewGroup {
 	float distanceInfluenceForSnapDuration(float f) {
 		f -= 0.5f; // center the values about 0.
 		f *= 0.3f * Math.PI / 2.0f;
-		return (float) FloatMath.sin(f);
+		return FloatMath.sin(f);
 	}
 
 	public int getDestScrollX(int page) {
@@ -414,17 +415,15 @@ public class CustomViewAbove extends ViewGroup {
 		final int width = getBehindWidth();
 		final int halfWidth = width / 2;
 		final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
-		final float distance = halfWidth + halfWidth *
-				distanceInfluenceForSnapDuration(distanceRatio);
+		final float distance = halfWidth + halfWidth *distanceInfluenceForSnapDuration(distanceRatio);
 
-		int duration = 0;
+		int duration;
 		velocity = Math.abs(velocity);
 		if (velocity > 0) {
 			duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
 		} else {
 			final float pageDelta = (float) Math.abs(dx) / width;
 			duration = (int) ((pageDelta + 1) * 100);
-			duration = MAX_SETTLE_DURATION;
 		}
 		duration = Math.min(duration, MAX_SETTLE_DURATION);
 
@@ -820,7 +819,7 @@ public class CustomViewAbove extends ViewGroup {
 				targetPage += 1;
 			}
 		} else {
-			targetPage = (int) Math.round(mCurItem + pageOffset);
+			targetPage = Math.round(mCurItem + pageOffset);
 		}
 		return targetPage;
 	}
@@ -839,7 +838,7 @@ public class CustomViewAbove extends ViewGroup {
 		
 		if (mTransformer != null) {
 			canvas.save();
-			mTransformer.transformCanvas(canvas, getPercentOpen());
+			mTransformer.transformCanvas(canvas, getPercentOpen(),getScrollX());
 			super.dispatchDraw(canvas);
 			canvas.restore();
 		} else {

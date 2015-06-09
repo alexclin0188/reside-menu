@@ -117,7 +117,7 @@ public class CustomViewBehind extends ViewGroup {
 	protected void dispatchDraw(Canvas canvas) {
 		if (mTransformer != null) {
 			canvas.save();
-			mTransformer.transformCanvas(canvas, mViewAbove.getPercentOpen());
+			mTransformer.transformCanvas(canvas, mViewAbove.getPercentOpen(),mViewAbove.getScrollX());
 			super.dispatchDraw(canvas);
 			canvas.restore();
 		} else
@@ -250,7 +250,7 @@ public class CustomViewBehind extends ViewGroup {
 			case 0:
 				return content.getLeft();
 			case 2:
-				return content.getLeft() + getBehindWidth();	
+				return content.getLeft() + getBehindWidth();
 			}
 		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
 			switch (page) {

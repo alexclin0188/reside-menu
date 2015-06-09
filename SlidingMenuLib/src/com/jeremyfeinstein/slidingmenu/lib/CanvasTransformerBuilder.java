@@ -18,7 +18,7 @@ public class CanvasTransformerBuilder {
 	private void initTransformer() {
 		if (mTrans == null)
 			mTrans = new CanvasTransformer() {
-			public void transformCanvas(Canvas canvas, float percentOpen) {	}
+			public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {	}
 		};
 	}
 
@@ -33,8 +33,8 @@ public class CanvasTransformerBuilder {
 			final int px, final int py, final Interpolator interp) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
-			public void transformCanvas(Canvas canvas, float percentOpen) {
-				mTrans.transformCanvas(canvas, percentOpen);
+			public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {
+				mTrans.transformCanvas(canvas, percentOpen,scrollX);
 				float f = interp.getInterpolation(percentOpen);
 				canvas.scale((openedX - closedX) * f + closedX,
 						(openedY - closedY) * f + closedY, px, py);
@@ -52,8 +52,8 @@ public class CanvasTransformerBuilder {
 			final int px, final int py, final Interpolator interp) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
-			public void transformCanvas(Canvas canvas, float percentOpen) {
-				mTrans.transformCanvas(canvas, percentOpen);
+			public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {
+				mTrans.transformCanvas(canvas, percentOpen,scrollX);
 				float f = interp.getInterpolation(percentOpen);
 				canvas.rotate((openedDeg - closedDeg) * f + closedDeg, 
 						px, py);
@@ -71,8 +71,8 @@ public class CanvasTransformerBuilder {
 			final int openedY, final int closedY, final Interpolator interp) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
-			public void transformCanvas(Canvas canvas, float percentOpen) {
-				mTrans.transformCanvas(canvas, percentOpen);
+			public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {
+				mTrans.transformCanvas(canvas, percentOpen,scrollX);
 				float f = interp.getInterpolation(percentOpen);
 				canvas.translate((openedX - closedX) * f + closedX,
 						(openedY - closedY) * f + closedY);
@@ -84,9 +84,9 @@ public class CanvasTransformerBuilder {
 	public CanvasTransformer concatTransformer(final CanvasTransformer t) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
-			public void transformCanvas(Canvas canvas, float percentOpen) {
-				mTrans.transformCanvas(canvas, percentOpen);
-				t.transformCanvas(canvas, percentOpen);
+			public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {
+				mTrans.transformCanvas(canvas, percentOpen,scrollX);
+				t.transformCanvas(canvas, percentOpen,scrollX);
 			}			
 		};
 		return mTrans;

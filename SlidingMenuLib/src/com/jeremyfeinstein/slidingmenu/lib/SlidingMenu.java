@@ -168,7 +168,7 @@ public class SlidingMenu extends RelativeLayout {
 		 * @param percentOpen
 		 *            the percent open
 		 */
-		public void transformCanvas(Canvas canvas, float percentOpen);
+		public void transformCanvas(Canvas canvas, float percentOpen,float scrollX);
 	}
 
 	/**
@@ -663,12 +663,6 @@ public class SlidingMenu extends RelativeLayout {
 	 *            behind view scrolls to.
 	 */
 	public void setBehindOffset(int i) {
-		// RelativeLayout.LayoutParams params =
-		// ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams());
-		// int bottom = params.bottomMargin;
-		// int top = params.topMargin;
-		// int left = params.leftMargin;
-		// params.setMargins(left, top, i, bottom);
 		mViewBehind.setWidthOffset(i);
 	}
 
