@@ -79,9 +79,6 @@ public class MainActivity extends SlidingFragmentActivity implements View.OnClic
                 }
             }
         });
-
-        findViewById(R.id.btn_left).setOnClickListener(this);
-        findViewById(R.id.btn_right).setOnClickListener(this);
     }
 
     @Override

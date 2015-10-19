@@ -13,8 +13,10 @@ public class ContentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.layout_content, null);
+        View view = inflater.inflate(R.layout.layout_content, null);
+        view.findViewById(R.id.btn_left).setOnClickListener((MainActivity)getActivity());
+        view.findViewById(R.id.btn_right).setOnClickListener((MainActivity)getActivity());
+        return view;
     }
 
 }
