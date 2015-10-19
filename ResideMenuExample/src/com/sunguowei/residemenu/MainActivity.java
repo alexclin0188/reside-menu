@@ -8,7 +8,7 @@ import android.view.View;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class MainActivity extends SlidingFragmentActivity {
+public class MainActivity extends SlidingFragmentActivity implements View.OnClickListener {
 
     private Fragment mContent;
 
@@ -50,39 +50,55 @@ public class MainActivity extends SlidingFragmentActivity {
         // customize the SlidingMenu
         SlidingMenu sm = getSlidingMenu();
         sm.setMode(SlidingMenu.LEFT_RIGHT);
-        sm.setBehindOffset(500);
-        sm.setAboveOffset(400);
+        sm.setBehindOffset(300, 500);
         sm.setFadeEnabled(false);
         sm.setBehindScrollScale(0.25f);
         sm.setFadeDegree(0.25f);
-
-        sm.setSecondaryMenu(R.layout.layout_menu);
-
+        sm.setRightMenu(R.layout.layout_menu_right);
         sm.setBackgroundImage(R.drawable.img_frame_background);
         sm.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {
             @Override
-            public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {
+            public void transformCanvas(Canvas canvas, float percentOpen, float scrollX) {
                 float scale = (float) (percentOpen * 0.25 + 0.75);
-                canvas.scale(scale, scale, -canvas.getWidth() / 2,canvas.getHeight() / 2);
+                if (scrollX < 0) {
+                    canvas.scale(scale, scale, -canvas.getWidth() / 2, canvas.getHeight() / 2);
+                } else {
+                    canvas.scale(scale, scale, canvas.getWidth() * 3 / 2, canvas.getHeight() / 2);
+                }
             }
         });
 
         sm.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {
             @Override
-            public void transformCanvas(Canvas canvas, float percentOpen,float scrollX) {
+            public void transformCanvas(Canvas canvas, float percentOpen, float scrollX) {
                 float scale = (float) (1 - percentOpen * 0.25);
-                if(scrollX<0){
+                if (scrollX < 0) {
                     canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
-                }else{
+                } else {
                     canvas.scale(scale, scale, canvas.getWidth(), canvas.getHeight() / 2);
                 }
             }
         });
+
+        findViewById(R.id.btn_left).setOnClickListener(this);
+        findViewById(R.id.btn_right).setOnClickListener(this);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "mContent", mContent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_left:
+                showLeftMenu();
+                break;
+            case R.id.btn_right:
+                showRightMenu();
+                break;
+        }
     }
 }

@@ -74,9 +74,9 @@ public class SlidingActivityHelper {
 			public void run() {
 				if (open) {
 					if (secondary) {
-						mSlidingMenu.showSecondaryMenu(false);
+						mSlidingMenu.showRightMenu(false);
 					} else {
-						mSlidingMenu.showMenu(false);
+						mSlidingMenu.showLeftMenu(false);
 					}
 				} else {
 					mSlidingMenu.showContent(false);					
@@ -189,16 +189,16 @@ public class SlidingActivityHelper {
 	/**
 	 * Open the SlidingMenu and show the menu view.
 	 */
-	public void showMenu() {
-		mSlidingMenu.showMenu();
+	public void showLeftMenu() {
+		mSlidingMenu.showLeftMenu();
 	}
 
 	/**
 	 * Open the SlidingMenu and show the secondary menu view. Will default to the regular menu
 	 * if there is only one.
 	 */
-	public void showSecondaryMenu() {
-		mSlidingMenu.showSecondaryMenu();
+	public void showRightMenu() {
+		mSlidingMenu.showRightMenu();
 	}
 
 	/**

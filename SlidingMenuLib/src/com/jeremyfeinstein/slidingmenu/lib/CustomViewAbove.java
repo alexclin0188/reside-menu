@@ -309,11 +309,11 @@ public class CustomViewAbove extends ViewGroup {
 
 	public int getDestScrollX(int page) {
 		switch (page) {
-		case 0:
-		case 2:
-			return mViewBehind.getMenuLeft(mContent, page);
-		case 1:
-			return mContent.getLeft();
+			case SlidingMenu.POSITION_OPEN_LEFT:
+			case SlidingMenu.POSITION_OPEN_RIGHT:
+				return mViewBehind.getMenuLeft(mContent, page);
+			case SlidingMenu.POSITION_CLOSE:
+				return mContent.getLeft();
 		}
 		return 0;
 	}
@@ -343,18 +343,18 @@ public class CustomViewAbove extends ViewGroup {
 		return false;
 	}
 
-	public int getBehindWidth() {
+	public int getBehindWidth(int page) {
 		if (mViewBehind == null) {
 			return 0;
 		} else {
-			return mViewBehind.getBehindWidth();
+			return mViewBehind.getBehindWidth(page);
 		}
 	}
 
 	public int getChildWidth(int i) {
 		switch (i) {
 		case 0:
-			return getBehindWidth();
+			return getBehindWidth(i);
 		case 1:
 			return mContent.getWidth();
 		default:
@@ -412,7 +412,7 @@ public class CustomViewAbove extends ViewGroup {
 		setScrollingCacheEnabled(true);
 		mScrolling = true;
 
-		final int width = getBehindWidth();
+		final int width = getBehindWidth(mCurItem);
 		final int halfWidth = width / 2;
 		final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
 		final float distance = halfWidth + halfWidth *distanceInfluenceForSnapDuration(distanceRatio);
@@ -734,7 +734,7 @@ public class CustomViewAbove extends ViewGroup {
 				int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
 						velocityTracker, mActivePointerId);
 				final int scrollX = getScrollX();
-				final float pageOffset = (float) (scrollX - getDestScrollX(mCurItem)) / getBehindWidth();
+				final float pageOffset = (float) (scrollX - getDestScrollX(mCurItem)) / getBehindWidth(mCurItem);
 				final int activePointerIndex = getPointerIndex(ev, mActivePointerId);
 				if (mActivePointerId != INVALID_POINTER) {
 					final float x = MotionEventCompat.getX(ev, activePointerIndex);
@@ -802,9 +802,8 @@ public class CustomViewAbove extends ViewGroup {
 	public void scrollTo(int x, int y) {
 		super.scrollTo(x, y);
 		mScrollX = x;
-		mViewBehind.scrollBehindTo(mContent, x, y);	
+		mViewBehind.scrollBehindTo(x>0?SlidingMenu.POSITION_OPEN_RIGHT:SlidingMenu.POSITION_OPEN_LEFT,mContent, x, y);
 	   ((SlidingMenu)getParent()).manageLayers(getPercentOpen());
-		
 		if (mTransformer != null) {
 			invalidate();
 		}
@@ -825,7 +824,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	protected float getPercentOpen() {
-		return Math.abs(mScrollX-mContent.getLeft()) / getBehindWidth();
+		return Math.abs(mScrollX-mContent.getLeft()) / getBehindWidth(mScrollX-mContent.getLeft()>0?SlidingMenu.POSITION_OPEN_RIGHT:SlidingMenu.POSITION_OPEN_LEFT);
 	}
 
 	@Override

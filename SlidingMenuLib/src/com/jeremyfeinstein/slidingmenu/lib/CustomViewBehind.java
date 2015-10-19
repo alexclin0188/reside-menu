@@ -27,7 +27,8 @@ public class CustomViewBehind extends ViewGroup {
 	private View mContent;
 	private View mSecondaryContent;
 	private int mMarginThreshold;
-	private int mWidthOffset;
+	private int mLeftWidthOffset;
+	private int mRightWidthOffset;
 	private CanvasTransformer mTransformer;
 	private boolean mChildrenEnabled;
 
@@ -50,7 +51,12 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public void setWidthOffset(int i) {
-		mWidthOffset = i;
+		setWidthOffset(i, i);
+	}
+
+	public void setWidthOffset(int left,int right) {
+		mLeftWidthOffset = left;
+		mRightWidthOffset = right;
 		requestLayout();
 	}
 	
@@ -62,8 +68,11 @@ public class CustomViewBehind extends ViewGroup {
 		return mMarginThreshold;
 	}
 
-	public int getBehindWidth() {
-		return mContent.getWidth();
+	public int getBehindWidth(int page) {
+		if(page==SlidingMenu.POSITION_OPEN_LEFT)
+			return mContent.getWidth();
+		else
+			return mSecondaryContent.getWidth();
 	}
 
 	public void setContent(View v) {
@@ -128,9 +137,9 @@ public class CustomViewBehind extends ViewGroup {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		final int width = r - l;
 		final int height = b - t;
-		mContent.layout(0, 0, width-mWidthOffset, height);
+		mContent.layout(0, 0, width- mLeftWidthOffset, height);
 		if (mSecondaryContent != null)
-			mSecondaryContent.layout(0, 0, width-mWidthOffset, height);
+			mSecondaryContent.layout(0, 0, width- mRightWidthOffset, height);
 	}
 
 	@Override
@@ -138,11 +147,10 @@ public class CustomViewBehind extends ViewGroup {
 		int width = getDefaultSize(0, widthMeasureSpec);
 		int height = getDefaultSize(0, heightMeasureSpec);
 		setMeasuredDimension(width, height);
-		final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthOffset);
 		final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
-		mContent.measure(contentWidth, contentHeight);
+		mContent.measure(getChildMeasureSpec(widthMeasureSpec, 0, width- mLeftWidthOffset), contentHeight);
 		if (mSecondaryContent != null)
-			mSecondaryContent.measure(contentWidth, contentHeight);
+			mSecondaryContent.measure(getChildMeasureSpec(widthMeasureSpec, 0, width- mRightWidthOffset), contentHeight);
 	}
 
 	private int mMode;
@@ -212,24 +220,24 @@ public class CustomViewBehind extends ViewGroup {
 		}
 	}
 
-	public void scrollBehindTo(View content, int x, int y) {
+	public void scrollBehindTo(int item,View content, int x, int y) {
 		int vis = View.VISIBLE;		
 		if (mMode == SlidingMenu.LEFT) {
 			if (x >= content.getLeft()) vis = View.INVISIBLE;
-			scrollTo((int)((x + getBehindWidth())*mScrollScale), y);
+			scrollTo((int)((x + getBehindWidth(item))*mScrollScale), y);
 		} else if (mMode == SlidingMenu.RIGHT) {
 			if (x <= content.getLeft()) vis = View.INVISIBLE;
-			scrollTo((int)(getBehindWidth() - getWidth() + 
-					(x-getBehindWidth())*mScrollScale), y);
+			scrollTo((int)(getBehindWidth(item) - getWidth() +
+					(x-getBehindWidth(item))*mScrollScale), y);
 		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
 			mContent.setVisibility(x >= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
 			mSecondaryContent.setVisibility(x <= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
 			vis = x == 0 ? View.INVISIBLE : View.VISIBLE;
 			if (x <= content.getLeft()) {
-				scrollTo((int)((x + getBehindWidth())*mScrollScale), y);				
+				scrollTo((int)((x + getBehindWidth(item))*mScrollScale), y);
 			} else {
-				scrollTo((int)(getBehindWidth() - getWidth() + 
-						(x-getBehindWidth())*mScrollScale), y);				
+				scrollTo((int)(getBehindWidth(item) - getWidth() +
+						(x-getBehindWidth(item))*mScrollScale), y);
 			}
 		}
 		if (vis == View.INVISIBLE)
@@ -240,24 +248,24 @@ public class CustomViewBehind extends ViewGroup {
 	public int getMenuLeft(View content, int page) {
 		if (mMode == SlidingMenu.LEFT) {
 			switch (page) {
-			case 0:
-				return content.getLeft() - getBehindWidth();
-			case 2:
-				return content.getLeft();
+				case SlidingMenu.POSITION_OPEN_LEFT:
+					return content.getLeft() - getBehindWidth(page);
+				case SlidingMenu.POSITION_OPEN_RIGHT:
+					return content.getLeft();
 			}
 		} else if (mMode == SlidingMenu.RIGHT) {
 			switch (page) {
-			case 0:
-				return content.getLeft();
-			case 2:
-				return content.getLeft() + getBehindWidth();
+				case SlidingMenu.POSITION_OPEN_LEFT:
+					return content.getLeft();
+				case SlidingMenu.POSITION_OPEN_RIGHT:
+					return content.getLeft() + getBehindWidth(page);
 			}
 		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
 			switch (page) {
-			case 0:
-				return content.getLeft() - getBehindWidth();
-			case 2:
-				return content.getLeft() + getBehindWidth();
+				case SlidingMenu.POSITION_OPEN_LEFT:
+					return content.getLeft() - getBehindWidth(page);
+				case SlidingMenu.POSITION_OPEN_RIGHT:
+					return content.getLeft() + getBehindWidth(page);
 			}
 		}
 		return content.getLeft();
@@ -265,7 +273,7 @@ public class CustomViewBehind extends ViewGroup {
 
 	public int getAbsLeftBound(View content) {
 		if (mMode == SlidingMenu.LEFT || mMode == SlidingMenu.LEFT_RIGHT) {
-			return content.getLeft() - getBehindWidth();
+			return content.getLeft() - getBehindWidth(SlidingMenu.LEFT);
 		} else if (mMode == SlidingMenu.RIGHT) {
 			return content.getLeft();
 		}
@@ -276,7 +284,7 @@ public class CustomViewBehind extends ViewGroup {
 		if (mMode == SlidingMenu.LEFT) {
 			return content.getLeft();
 		} else if (mMode == SlidingMenu.RIGHT || mMode == SlidingMenu.LEFT_RIGHT) {
-			return content.getLeft() + getBehindWidth();
+			return content.getLeft() + getBehindWidth(SlidingMenu.RIGHT);
 		}
 		return 0;
 	}
@@ -366,17 +374,17 @@ public class CustomViewBehind extends ViewGroup {
 		int left = 0;
 		int right = 0;
 		if (mMode == SlidingMenu.LEFT) {
-			left = content.getLeft() - getBehindWidth();
+			left = content.getLeft() - getBehindWidth(mMode);
 			right = content.getLeft();
 		} else if (mMode == SlidingMenu.RIGHT) {
 			left = content.getRight();
-			right = content.getRight() + getBehindWidth();			
+			right = content.getRight() + getBehindWidth(mMode);
 		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			left = content.getLeft() - getBehindWidth();
+			left = content.getLeft() - getBehindWidth(SlidingMenu.LEFT);
 			right = content.getLeft();
 			canvas.drawRect(left, 0, right, getHeight(), mFadePaint);
 			left = content.getRight();
-			right = content.getRight() + getBehindWidth();			
+			right = content.getRight() + getBehindWidth(SlidingMenu.RIGHT);
 		}
 		canvas.drawRect(left, 0, right, getHeight(), mFadePaint);
 	}

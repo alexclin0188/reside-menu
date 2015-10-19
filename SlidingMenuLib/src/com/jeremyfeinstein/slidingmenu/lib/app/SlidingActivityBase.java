@@ -54,13 +54,13 @@ public interface SlidingActivityBase {
 	/**
 	 * Open the SlidingMenu and show the menu view.
 	 */
-	public void showMenu();
+	public void showLeftMenu();
 
 	/**
 	 * Open the SlidingMenu and show the secondary (right) menu view. Will default to the regular menu
 	 * if there is only one.
 	 */
-	public void showSecondaryMenu();
+	public void showRightMenu();
 	
 	/**
 	 * Controls whether the ActionBar slides along with the above view when the menu is opened,
