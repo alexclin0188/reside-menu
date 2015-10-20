@@ -446,7 +446,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The desired content to display.
 	 */
 	public void setMenu(View v) {
-		mViewBehind.setContent(v);
+		mViewBehind.setLeftContent(v);
 	}
 
 	/**
@@ -455,7 +455,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the main menu
 	 */
 	public View getMenu() {
-		return mViewBehind.getContent();
+		return mViewBehind.getleftContent();
 	}
 
 	/**
@@ -477,7 +477,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The desired content to display.
 	 */
 	public void setRightMenu(View v) {
-		mViewBehind.setSecondaryContent(v);
+		mViewBehind.setRightContent(v);
 		// mViewBehind.invalidate();
 	}
 
@@ -487,7 +487,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the current menu
 	 */
 	public View getSecondaryMenu() {
-		return mViewBehind.getSecondaryContent();
+		return mViewBehind.getRightContent();
 	}
 
 	/**
