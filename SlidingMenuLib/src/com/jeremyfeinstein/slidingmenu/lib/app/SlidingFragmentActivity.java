@@ -79,22 +79,22 @@ public class SlidingFragmentActivity extends FragmentActivity implements Sliding
 	/* (non-Javadoc)
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(int)
 	 */
-	public void setBehindContentView(int id) {
-		setBehindContentView(getLayoutInflater().inflate(id, null));
+	public void setBehindContentView(boolean isLeft,int id) {
+		setBehindContentView(isLeft,getLayoutInflater().inflate(id, null));
 	}
 
 	/* (non-Javadoc)
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(android.view.View)
 	 */
-	public void setBehindContentView(View v) {
-		setBehindContentView(v, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+	public void setBehindContentView(boolean isLeft,View v) {
+		setBehindContentView(isLeft,v, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
 
 	/* (non-Javadoc)
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(android.view.View, android.view.ViewGroup.LayoutParams)
 	 */
-	public void setBehindContentView(View v, LayoutParams params) {
-		mHelper.setBehindContentView(v, params);
+	public void setBehindContentView(boolean isLeft,View v, LayoutParams params) {
+		mHelper.setBehindContentView(isLeft,v, params);
 	}
 
 	/* (non-Javadoc)

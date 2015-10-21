@@ -158,9 +158,12 @@ public class SlidingActivityHelper {
 	 * @param view The desired content to display.
 	 * @param layoutParams Layout parameters for the view. (unused)
 	 */
-	public void setBehindContentView(View view, LayoutParams layoutParams) {
+	public void setBehindContentView(boolean isLeft,View view, LayoutParams layoutParams) {
 		mViewBehind = view;
-		mSlidingMenu.setMenu(mViewBehind);
+		if(isLeft)
+			mSlidingMenu.setLeftMenu(mViewBehind);
+		else
+			mSlidingMenu.setRightMenu(view);
 	}
 
 	/**

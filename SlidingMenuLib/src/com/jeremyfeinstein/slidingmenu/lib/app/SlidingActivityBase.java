@@ -14,7 +14,7 @@ public interface SlidingActivityBase {
 	 * @param view The desired content to display.
 	 * @param layoutParams Layout parameters for the view.
 	 */
-	public void setBehindContentView(View view, LayoutParams layoutParams);
+	public void setBehindContentView(boolean isLeft,View view, LayoutParams layoutParams);
 
 	/**
 	 * Set the behind view content to an explicit view. This view is placed directly into the behind view 's view hierarchy.
@@ -24,7 +24,7 @@ public interface SlidingActivityBase {
 	 *
 	 * @param view The desired content to display.
 	 */
-	public void setBehindContentView(View view);
+	public void setBehindContentView(boolean isLeft,View view);
 
 	/**
 	 * Set the behind view content from a layout resource. The resource will be inflated, adding all top-level views
@@ -32,7 +32,7 @@ public interface SlidingActivityBase {
 	 *
 	 * @param layoutResID Resource ID to be inflated.
 	 */
-	public void setBehindContentView(int layoutResID);
+	public void setBehindContentView(boolean isLeft,int layoutResID);
 
 	/**
 	 * Gets the SlidingMenu associated with this activity.

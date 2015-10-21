@@ -273,9 +273,9 @@ public class SlidingMenu extends RelativeLayout {
 		int viewBehind = ta.getResourceId(R.styleable.SlidingMenu_viewBehind,
 				-1);
 		if (viewBehind != -1) {
-			setMenu(viewBehind);
+			setLeftMenu(viewBehind);
 		} else {
-			setMenu(new FrameLayout(context));
+			setLeftMenu(new FrameLayout(context));
 		}
 		int touchModeAbove = ta.getInt(R.styleable.SlidingMenu_touchModeAbove,
 				TOUCHMODE_MARGIN);
@@ -435,8 +435,8 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param res
 	 *            the new content
 	 */
-	public void setMenu(int res) {
-		setMenu(LayoutInflater.from(getContext()).inflate(res, null));
+	public void setLeftMenu(int res) {
+		setLeftMenu(LayoutInflater.from(getContext()).inflate(res, null));
 	}
 
 	/**
@@ -445,7 +445,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param v
 	 *            The desired content to display.
 	 */
-	public void setMenu(View v) {
+	public void setLeftMenu(View v) {
 		mViewBehind.setLeftContent(v);
 	}
 
@@ -454,8 +454,8 @@ public class SlidingMenu extends RelativeLayout {
 	 * 
 	 * @return the main menu
 	 */
-	public View getMenu() {
-		return mViewBehind.getleftContent();
+	public View getLeftMenu() {
+		return mViewBehind.getLeftContent();
 	}
 
 	/**
@@ -478,7 +478,6 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public void setRightMenu(View v) {
 		mViewBehind.setRightContent(v);
-		// mViewBehind.invalidate();
 	}
 
 	/**
@@ -486,7 +485,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * 
 	 * @return the current menu
 	 */
-	public View getSecondaryMenu() {
+	public View getRightMenu() {
 		return mViewBehind.getRightContent();
 	}
 
@@ -1161,9 +1160,9 @@ public class SlidingMenu extends RelativeLayout {
 					Log.v(TAG, "changing layerType. hardware? "
 							+ (layerType == View.LAYER_TYPE_HARDWARE));
 					getContent().setLayerType(layerType, null);
-					getMenu().setLayerType(layerType, null);
-					if (getSecondaryMenu() != null) {
-						getSecondaryMenu().setLayerType(layerType, null);
+					getLeftMenu().setLayerType(layerType, null);
+					if (getRightMenu() != null) {
+						getRightMenu().setLayerType(layerType, null);
 					}
 				}
 			});

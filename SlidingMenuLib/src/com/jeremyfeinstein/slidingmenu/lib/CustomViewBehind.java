@@ -82,7 +82,7 @@ public class CustomViewBehind extends ViewGroup {
 		addView(mLeftContent);
 	}
 
-	public View getleftContent() {
+	public View getLeftContent() {
 		return mLeftContent;
 	}
 
